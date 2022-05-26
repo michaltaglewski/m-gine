@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+
+<?php
+
+$version = '0.0.1';
+
+print 'Welcome to the M-gine commands' . PHP_EOL;
+print 'Version: ' . $version . PHP_EOL;
+
+exit(1);
