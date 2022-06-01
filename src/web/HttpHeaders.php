@@ -5,6 +5,11 @@ namespace mgine\web;
 use mgine\base\Component;
 use mgine\helpers\ArrayHelper;
 
+/**
+ * HttpHeaders
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class HttpHeaders extends Component
 {
     public const AUTH_BASIC = 'Basic';

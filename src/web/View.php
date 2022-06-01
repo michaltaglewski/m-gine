@@ -5,15 +5,26 @@ namespace mgine\web;
 use mgine\base\BaseView;
 use mgine\helpers\HtmlHelper;
 
+/**
+ * View
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class View extends BaseView
 {
     public $title = 'Main Page';
 
-    public function charset()
+    /**
+     * @return string
+     */
+    public function charset(): string
     {
         return \App::$get->response->charset;
     }
 
+    /**
+     * @return void
+     */
     public function bodyEnd(): void
     {
         $content = implode('', $this->js);
@@ -34,11 +45,17 @@ class View extends BaseView
         echo HtmlHelper::tag('script', $script, ['type' => 'text/javascript']); // text/javascript
     }
 
+    /**
+     * @return void
+     */
     public function beginJS()
     {
         ob_start();
     }
 
+    /**
+     * @return void
+     */
     public function endJS()
     {
         $script = ob_get_clean();
@@ -50,6 +67,10 @@ class View extends BaseView
         $this->registerJs($script);
     }
 
+    /**
+     * @param string $script
+     * @return void
+     */
     public function registerJs(string $script)
     {
         $this->js[] = $script;

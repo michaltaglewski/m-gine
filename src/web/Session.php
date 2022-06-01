@@ -4,6 +4,11 @@ namespace mgine\web;
 
 use mgine\base\Component;
 
+/**
+ * Session
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class Session extends Component
 {
     public function __construct()
