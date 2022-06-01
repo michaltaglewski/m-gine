@@ -4,10 +4,15 @@ namespace mgine\di;
 
 use ReflectionClass;
 use ReflectionMethod;
-use mgine\base\ContainerException;
 use ReflectionException;
 use Psr\Container\ContainerInterface;
+use mgine\base\ContainerException;
 
+/**
+ * DI Container
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class Container implements ContainerInterface
 {
     /**
