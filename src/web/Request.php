@@ -2,38 +2,67 @@
 
 namespace mgine\web;
 
-use mgine\base\Component;
 use mgine\helpers\ArrayHelper;
 
 /**
- * @property array $get
- * @property array $post
+ * Request
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
  */
-class Request extends Component
+class Request extends \mgine\base\Request
 {
+    /**
+     * @var array
+     */
     public array $get;
 
+    /**
+     * @var array
+     */
     public array $post;
 
+    /**
+     * @var string
+     */
     public string $method;
 
+    /**
+     * @var HttpHeaders
+     */
     public HttpHeaders $headers;
 
+    /**
+     * @var bool
+     */
     public bool $csrfValidation = true;
 
+    /**
+     * @var bool
+     */
     public bool $csrfCookieMethod = false;
 
+    /**
+     * @var string
+     */
     public string $csrfParamName = '_csrf';
 
+    /**
+     * @var string
+     */
     public string $csrfMetaParamAttr = 'csrf-param';
 
+    /**
+     * @var string
+     */
     public string $csrfMetaTokenAttr = 'csrf-token';
 
+    /**
+     * @param HttpHeaders $headers
+     */
     public function __construct(HttpHeaders $headers)
     {
         unset($_GET['_url']);
 
-//        $this->headers = new HttpHeaders();
         $this->headers = $headers;
         $this->method = strtolower($_SERVER['REQUEST_METHOD']);
 
@@ -43,27 +72,47 @@ class Request extends Component
         $this->generateCsrfToken();
     }
 
+    /**
+     * @return bool
+     */
     public function isGet() :bool
     {
         return $this->method === 'get';
     }
 
+    /**
+     * @return bool
+     */
     public function isPost() :bool
     {
         return $this->method === 'post';
     }
 
+    /**
+     * @param string $name
+     * @param mixed|null $defaultValue
+     * @return string|null
+     */
     public function get(string $name, mixed $defaultValue = null) :?string
     {
         return isset($this->get[$name]) ? $this->get[$name] : $defaultValue;
     }
 
+    /**
+     * @param string $name
+     * @param mixed|null $defaultValue
+     * @return string|null
+     */
     public function post(string $name, mixed $defaultValue = null) :?string
     {
         return isset($this->post[$name]) ? $this->post[$name] : $defaultValue;
     }
 
-    public function updateGetParams(array $params)
+    /**
+     * @param array $params
+     * @return void
+     */
+    public function updateGetParams(array $params): void
     {
         ArrayHelper::filterNumericKeys($params);
 
@@ -83,6 +132,9 @@ class Request extends Component
         throw new NotFoundHttpException('Page Not Found');
     }
 
+    /**
+     * @return string|null
+     */
     public function getQueryString() :?string
     {
         $path = $_SERVER['REQUEST_URI'] ?? null;
@@ -92,8 +144,13 @@ class Request extends Component
         if($pos !== false){
             return substr($path, $pos);
         }
+
+        return null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPath() :?string
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
@@ -107,11 +164,17 @@ class Request extends Component
         return substr($path, 0, $pos);
     }
 
+    /**
+     * @return string
+     */
     public function getMethod() :string
     {
         return $this->method;
     }
 
+    /**
+     * @return void
+     */
     public function generateCsrfToken(): void
     {
         $headerToken = $this->headers->getHeaderCsrfToken();
@@ -122,6 +185,10 @@ class Request extends Component
         }
     }
 
+    /**
+     * @return \stdClass
+     * @throws UnauthorizedHttpException
+     */
     public function JWTAuth(): \stdClass
     {
         $state = $this->get('state');
@@ -134,13 +201,16 @@ class Request extends Component
         return $jwt->payload;
     }
 
+    /**
+     * @return bool
+     * @throws BadRequestHttpException
+     */
     public function csrfValidate(): bool
     {
         if($this->csrfValidation && $this->isPost()){
 
             $trueToken = $this->getTrueCsrfToken();
             $headerToken = $this->headers->getHeaderCsrfToken();
-//            $headerToken = $this->getHeaderCsrfToken();
 
             if($trueToken === $headerToken){
                 return true;
@@ -152,11 +222,17 @@ class Request extends Component
         return false;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPostCsrfToken(): ?string
     {
         return $this->post[$this->csrfParamName] ?? null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTrueCsrfToken(): ?string
     {
         if($this->csrfCookieMethod){
@@ -168,6 +244,9 @@ class Request extends Component
         return $token;
     }
 
+    /**
+     * @return void
+     */
     private function _generateCsrfToken(): void
     {
         $token = \App::$get->security->generateRandomString();

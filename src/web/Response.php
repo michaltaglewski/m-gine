@@ -2,13 +2,15 @@
 
 namespace mgine\web;
 
-use mgine\base\Component;
 use mgine\base\HeadersAlreadySentException;
 
-class Response extends Component
+/**
+ * Response
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
+class Response extends \mgine\base\Response
 {
-    public const FORMAT_TEXT_PLAIN = 'text';
-
     public const FORMAT_HTML = 'html';
 
     public const FORMAT_JSON = 'json';
@@ -26,6 +28,8 @@ class Response extends Component
     public function __construct(HttpHeaders $headers)
     {
         $this->headers = $headers;
+
+        parent::__construct();
     }
 
     public function asJson()
@@ -38,7 +42,7 @@ class Response extends Component
         $this->format = self::FORMAT_TEXT_PLAIN;
     }
 
-    public function send()
+    public function send(): void
     {
         if($this->format === self::FORMAT_HTML && is_array($this->content)){
             throw new \Exception('Response text/html format must not be array');
@@ -50,28 +54,22 @@ class Response extends Component
         $this->sendHeaders();
 
         if($this->format === self::FORMAT_JSON){
-            echo json_encode($this->content);
-        } else {
-            echo $this->content;
+            $this->content = json_encode($this->content);
         }
 
-        exit($this->statusCode);
+        parent::send();
     }
 
     /**
      * Sends and handle HttpException error to the client
-     * @param HttpException $ex
+     * @param \Throwable $ex
      * @return void
      */
-    public function sendError(HttpException $ex)
+    public function sendError(\Throwable $ex)
     {
         http_response_code($ex->statusCode);
 
-        if(DEBUG_MODE){
-            throw $ex;
-        }
-
-        echo $ex->getMessage();
+        parent::sendError($ex);
     }
 
     public function applyResponseFormat()

@@ -2,21 +2,42 @@
 
 namespace mgine\web;
 
+/**
+ * Web Application
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class Application extends \mgine\base\Application
 {
+    /**
+     * @var string
+     */
     public string $controllerNamespace = 'app\controllers';
 
+    /**
+     * @var string
+     */
     public string $moduleNamespace = 'app\module';
 
+    /**
+     * @var Session
+     */
     public Session $session;
 
+    /**
+     * @var Request
+     */
     public Request $request;
 
+    /**
+     * @var Response
+     */
     public Response $response;
 
+    /**
+     * @var UrlManager
+     */
     public UrlManager $urlManager;
-
-    public Controller $controller;
 
     /**
      * @param array $config
@@ -34,7 +55,7 @@ class Application extends \mgine\base\Application
     public function run() :void
     {
         try {
-            $this->response->content = $this->handleRequest();
+            $this->response->content = $this->handleRequest($this->request);
             $this->response->send();
 
         } catch (HttpException $ex){
@@ -42,40 +63,34 @@ class Application extends \mgine\base\Application
         }
     }
 
+    /**
+     * @return mixed
+     * @throws \ReflectionException
+     * @throws \mgine\base\ContainerException
+     */
     public function createView(): mixed
     {
         return $this->container->get('mgine\web\View');
     }
 
     /**
-     * @return string|null
+     * @param Request $request
+     * @return array|string
+     * @throws NotFoundHttpException
      */
-    protected function handleRequest(): mixed
+    public function handleRequest($request): array|string
     {
-        list($route, $params) = $this->request->resolve();
+        list($route, $params) = $request->resolve();
 
         return $this->runAction($route, $params);
     }
 
     /**
-     * @param string $route
-     * @param array $params
-     * @return string|null
-     * @throws BadRequestHttpException
+     * @return void
+     * @throws \ReflectionException
+     * @throws \mgine\base\ContainerException
+     * @throws \mgine\base\InvalidConfigException
      */
-    public function runAction(string $route, array $params = []): mixed
-    {
-        list(
-            $this->controllerNamespace,
-            $controllerId,
-            $actionId
-        ) = $this->resolveControllerRoute($route);
-
-        $this->controller = $this->createController($controllerId);
-
-        return $this->controller?->runAction($actionId, $params);
-    }
-
     protected function coreComponents(): void
     {
         $this->add('urlManager', 'mgine\web\UrlManager');

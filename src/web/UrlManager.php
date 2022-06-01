@@ -3,18 +3,25 @@
 namespace mgine\web;
 
 /**
- * @property array $config
- * @property array $rules
- * @property Request $request
+ * UrlManager
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
  */
 class UrlManager extends \mgine\base\Component
 {
-//    public array $config = [];
-
+    /**
+     * @var array
+     */
     public array $rules = [];
 
+    /**
+     * @var string
+     */
     public string $defaultRoute = 'index/index';
 
+    /**
+     * @var Request
+     */
     public Request $request;
 
     public function init()
@@ -22,9 +29,11 @@ class UrlManager extends \mgine\base\Component
         $this->createRules();
     }
 
+    /**
+     * @return void
+     */
     private function createRules() :void
     {
-//        $this->get('/', $this->defaultRoute);
         $this->rules[BASE_URL] = $this->defaultRoute;
 
         if(!empty($this->config['rules'])){
@@ -34,7 +43,14 @@ class UrlManager extends \mgine\base\Component
         }
     }
 
-    public function get(string $path, string $route)
+    /**
+     * @TODO
+     *
+     * @param string $path
+     * @param string $route
+     * @return void
+     */
+    public function get(string $path, string $route): void
     {
 //        $path = htmlspecialchars($path, ENT_QUOTES, 'UTF-8');
         $this->rules['get'][$path] = $route;
@@ -84,8 +100,6 @@ class UrlManager extends \mgine\base\Component
      */
     private function findRule(string $path) :array
     {
-        //$method = $this->request->getMethod();
-
         foreach ($this->rules as $rule => $route){
             $result = $this->matchRule($rule, $path);
 
@@ -116,6 +130,7 @@ class UrlManager extends \mgine\base\Component
             $ruleRegex = !empty($ruleRegex) ? $ruleRegex : '\w+';
 
             $rule = str_replace("<$pathRule>", "(?P<$attrName>$ruleRegex)", $rule); // (?P<name>\w+)
+//            var_dump( htmlspecialchars($rule, ENT_QUOTES, 'UTF-8'));die;
         }
 
         $pattern = "|^$rule?$|";

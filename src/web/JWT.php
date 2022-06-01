@@ -3,12 +3,17 @@
 namespace mgine\web;
 
 use mgine\base\Component;
-use mgine\helpers\FileHelper;
-use Firebase\JWT\JWT as BaseJWT;
-use Firebase\JWT\Key;
+use mgine\helpers\{ClassHelper,FileHelper};
+use Firebase\JWT\{Key, JWT as BaseJWT};
 use stdClass;
 use OpenSSLAsymmetricKey;
 
+/**
+ * JWT
+ *
+ * @link https://jwt.io
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class JWT extends Component
 {
     public ?string $jwtToken;
@@ -25,8 +30,14 @@ class JWT extends Component
 
     public ?stdClass $payload = null;
 
-    public $publicKeyFilename = 'public.pem';
+    public string $publicKeyFilename = 'public.pem';
 
+    /**
+     * @param HttpHeaders $headers
+     * @param string|null $state
+     * @param $alg
+     * @throws \mgine\base\InvalidConfigException
+     */
     public function __construct(HttpHeaders $headers, ?string $state = null, $alg = 'RS256')
     {
         $this->alg = $alg;
@@ -38,6 +49,9 @@ class JWT extends Component
         parent::__construct();
     }
 
+    /**
+     * @return bool
+     */
     public function auth(): bool
     {
         if($this->jwtCookieValidation && $this->jwtToken === null){
@@ -64,6 +78,10 @@ class JWT extends Component
         return false;
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     protected function setKeyObject(): void
     {
         if(str_starts_with($this->alg, 'RS')){
@@ -73,9 +91,13 @@ class JWT extends Component
         $this->key = new Key($this->keyMaterial, $this->alg);
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     protected function tryToLoadPublicKey(): void
     {
-        $filename = $this->getNamespacePath() . DIRECTORY_SEPARATOR . $this->publicKeyFilename;
+        $filename = ClassHelper::getNamespacePath($this) . DIRECTORY_SEPARATOR . $this->publicKeyFilename;
 
         $this->keyMaterial = FileHelper::readPublicKeyFile($filename);
 
@@ -84,6 +106,9 @@ class JWT extends Component
         }
     }
 
+    /**
+     * @return string|null
+     */
     private function cookieToken(): ?string
     {
         if(!isset($_COOKIE[$this->jwtCookieName])){
@@ -93,6 +118,12 @@ class JWT extends Component
         return $_COOKIE[$this->jwtCookieName];
     }
 
+    /**
+     * @param $cookieName
+     * @param $state
+     * @param stdClass $payload
+     * @return bool
+     */
     private function setAuthCookie($cookieName, $state, \stdClass $payload): bool
     {
         $domain = '.' . $_SERVER['SERVER_NAME'];
