@@ -4,6 +4,9 @@ namespace mgine\db;
 
 use mgine\base\Component;
 
+/**
+ * Connection @TODO
+ */
 abstract class Connection extends Component
 {
     public object|null $connection = null;

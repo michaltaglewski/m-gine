@@ -6,6 +6,11 @@ use mgine\helpers\ArrayHelper;
 use \PDOException;
 use mgine\base\Component;
 
+/**
+ * MysqlConnection @TODO
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class MysqlConnection extends Connection implements ConnectionInterface
 {
     public string $dsn;

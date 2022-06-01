@@ -2,6 +2,11 @@
 
 namespace mgine\db;
 
+/**
+ * ConnectionInterface
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 interface ConnectionInterface
 {
     public function connect(): bool;
