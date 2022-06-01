@@ -2,9 +2,18 @@
 
 namespace mgine\base;
 
+/**
+ * StringHelper
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class StringHelper
 {
-
+    /**
+     * @param array $params
+     * @param $separator
+     * @return string
+     */
     public static function parametrizeAssocArray(array $params, $separator = '='): string
     {
         $parts = array_map(function($k, $v) use ($separator) {
