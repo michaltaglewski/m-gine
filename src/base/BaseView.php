@@ -2,12 +2,29 @@
 
 namespace mgine\base;
 
+/**
+ *  BaseView
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class BaseView
 {
+    /**
+     * @var array
+     */
     public array $js = [];
 
+    /**
+     * @var string
+     */
     protected string $viewFileExtension = 'php';
 
+    /**
+     * @param string $view
+     * @param array $params
+     * @return string
+     * @throws \Exception
+     */
     public function render(string $view, array $params = []): string
     {
         if (\App::$get->controller !== null) {
@@ -23,6 +40,12 @@ class BaseView
         ]);
     }
 
+    /**
+     * @param string $viewFile
+     * @param array $params
+     * @return string
+     * @throws \Exception
+     */
     public function renderFile(string $viewFile, array $params = []) :string
     {
         $file = $viewFile . '.' . $this->viewFileExtension;
@@ -34,6 +57,11 @@ class BaseView
         return $this->renderPhpFile($file, $params);
     }
 
+    /**
+     * @param string $file
+     * @param array $params
+     * @return string
+     */
     public function renderPhpFile(string $file, array $params = []): string
     {
         ob_start();
@@ -44,31 +72,4 @@ class BaseView
         require $file;
         return ob_get_clean();
     }
-
-//    public function renderPhpFile($file, $params = [])
-//    {
-//        $_obInitialLevel_ = ob_get_level();
-//        ob_start();
-//        ob_implicit_flush(false);
-//        extract($params, EXTR_OVERWRITE);
-//        try {
-//            require $file;
-//            return ob_get_clean();
-//        } catch (\Exception $e) {
-//            while (ob_get_level() > $_obInitialLevel_) {
-//                if (!@ob_end_clean()) {
-//                    ob_clean();
-//                }
-//            }
-//            throw $e;
-//        } catch (\Throwable $e) {
-//            while (ob_get_level() > $_obInitialLevel_) {
-//                if (!@ob_end_clean()) {
-//                    ob_clean();
-//                }
-//            }
-//            throw $e;
-//        }
-//    }
-
 }

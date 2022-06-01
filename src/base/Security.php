@@ -2,8 +2,11 @@
 
 namespace mgine\base;
 
-use \mgine\base\StringHelper;
-
+/**
+ * Security
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class Security extends Component
 {
     public function generateRandomKey(int $length = 32): string

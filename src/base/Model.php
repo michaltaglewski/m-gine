@@ -4,6 +4,4 @@ namespace mgine\base;
 
 class Model
 {
-
-
 }
