@@ -4,17 +4,36 @@ namespace mgine\base;
 
 use mgine\di\Container;
 
+/**
+ * Base Application
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 abstract class Application extends Component
 {
     /**
-     * @var string application's root directory
+     * Application's root directory.
+     *
+     * @var string
      */
     public string $basePath;
 
     /**
-     * @var array framework application namespaces
+     * Application Loader.
+     *
+     * @var loader
      */
-    public array $autoload = [];
+    public Loader $loader;
+
+    /**
+     * @var string
+     */
+    public string $defaultRoute = 'index/index';
+
+    /**
+     * @var string
+     */
+    public string $defaultActionId = 'index';
 
     /**
      * @var string
@@ -27,94 +46,166 @@ abstract class Application extends Component
     public string $moduleNamespace = 'app/module';
 
     /**
-     * @var Container Dependency Injection Container
+     * @var Controller
+     */
+    public Controller $controller;
+
+    /**
+     * Dependency Injection Container.
+     *
+     * @var Container
      */
     public Container $container;
 
     /**
+     * Application Constructor.
+     *
      * @param array $config
      * @throws InvalidConfigException
      */
     public function __construct(array $config)
     {
-        parent::__construct($config);
-
         \App::$get = $this;
 
+        parent::__construct($config);
+
         $this->container = new Container();
+        $this->loader = new Loader();
 
         $this->configureAutoloader();
         $this->coreComponents();
     }
 
     /**
+     * The main method runs the entire application.
+     *
      * @return void
      */
     abstract public function run() :void;
 
     /**
-     * @param string $route
-     * @param array $params
-     * @return mixed
+     * @param Request $request
+     * @return array|string
      */
-    abstract public function runAction(string $route, array $params = []): mixed;
+    abstract public function handleRequest(Request $request): array|string;
 
     /**
-     * @param Configurable $object
-     * @param array $properties
-     * @return void
-     * @throws InvalidConfigException
+     * @param string $route
+     * @param array $params
+     * @return array|string
      */
-    public static function configure(Configurable $object, array $properties): void
+    public function runAction($route, array $params = []): array|string
     {
-        if(isset($properties['class']) && $properties['class'] !== $object::class){
-            throw new InvalidConfigException(sprintf('Configuration array class "%s" does not refer to the right Configurable object "%s".',
-                $properties['class'], $object::class));
-        }
+        list(
+            $this->controllerNamespace,
+            $controllerId,
+            $actionId
+            ) = $this->resolveControllerRoute($route);
 
-        foreach ($properties as $name => $value){
-            $object->$name = $value;
-        }
+        $this->controller = $this->createController($controllerId);
 
-        $object->config = $properties;
+        return $this->controller?->runAction($actionId, $params);
     }
 
     /**
-     * Configures the autoloader namespace with existing paths
-     * @return void
-     * @throws InvalidConfigException
+     * Creates new Controller instance
+     * @param string $controllerId
+     * @return \mgine\web\Controller | \mgine\console\Controller
+     * @throws \Exception
      */
-    private function configureAutoloader(): void
+    public function createController(string $controllerId)
     {
-        if(empty($this->basePath)){
-            throw new InvalidConfigException('Configuration $basePath attribute is requried.');
+        $controllerName = $this->controllerNamespace . '\\' . ucfirst($controllerId) . 'Controller';
+
+        if(!class_exists($controllerName)){
+            throw new InvalidControllerException(sprintf('Controller class "%s" does not exist.', $controllerName));
         }
 
-        if(!is_dir($this->basePath)){
-            throw new InvalidConfigException(sprintf('Configuration $basePath attribute "%s" is not a valid directory.', $this->basePath));
+        return new $controllerName();
+    }
+
+    /**
+     * @param $name
+     * @return Component|null
+     * @throws ContainerException
+     * @throws InvalidCallException
+     * @throws UnknownPropertyException
+     * @throws \ReflectionException
+     */
+    public function __get($name)
+    {
+        if ($this->hasInstance($name)) {
+            return $this->getInstance($name);
         }
 
-        $this->autoload = [
-            'app' => $this->basePath
-        ];
+        return parent::__get($name);
+    }
+
+    /**
+     * Registers a new component to the Application
+     *
+     * @param string $name
+     * @param string $class
+     * @param array $config
+     * @return false|void
+     * @throws ContainerException
+     * @throws InvalidConfigException
+     * @throws \ReflectionException
+     */
+    public function add(string $name, string $class, array $config = [])
+    {
+        if(!class_exists($class)){
+            throw new InvalidConfigException(sprintf('Class "%s" does not exist.', $class));
+        }
+
+        if($this->isConfigurable($class)){
+            $instance = new $class($config);
+        } else {
+            try {
+                $instance = $this->container->get($class);
+            } catch (ContainerException) {
+                throw new ContainerException(
+                    sprintf('Failed to install component class "%s" because of unresolvable "__construct" dependencies.', $class)
+                );
+            }
+        }
+
+        if(empty($instance->config)){
+            self::configure($instance, $config);
+        }
+
+        if(property_exists($this, $name)){
+            $this->$name = $instance;
+        } else {
+            $this->addInstance($name, $instance);
+        }
     }
 
     /**
      * Method resolves $route path. Example 'index/index' route refers to actionIndex() in IndexController
-     * @param string $route
-     * @return array [$namespace, $controllerId, $actionId] complete data to locate the requested Controller action
+     *
+     * @param $route
+     * @return array
+     * @throws EmptyRouteException
+     * @throws InvalidRouteException
      */
-    protected function resolveControllerRoute(string $route): array
+    protected function resolveControllerRoute($route): array
     {
-        $namespace = $this->controllerNamespace;
-        $parts = explode('/', $route);
-
-        $i = count($parts);
-
-        if($i < 2){
-            throw new \Exception(sprintf('Unresolvable route "%s"', $route));
+        if(!is_string($route) || empty($route)){
+            throw new EmptyRouteException(sprintf('Route must not be empty.'));
         }
 
+        if(!preg_match('/^[a-zA-Z_\x7f-\xff](?:[a-zA-Z0-9_\/\x7f-\xff]?)+(?<!\/)$/', $route)){
+            throw new InvalidRouteException(sprintf('Route "%s" contains invalid characters.', $route));
+        }
+
+        if(strpos($route, '/') === false){
+            $route .= '/' . $this->defaultActionId;
+        }
+
+        $parts = explode('/', $route);
+
+        $namespace = $this->controllerNamespace;
         $actionId = strtolower(array_pop($parts));
         $controllerId = strtolower(array_pop($parts));
         $path = strtolower(implode('\\', $parts));
@@ -129,22 +220,8 @@ abstract class Application extends Component
     }
 
     /**
-     * Final method creates new Controller instance
-     * @param string $controllerId
-     * @return \mgine\web\Controller | \mgine\base\BaseController
-     * @throws \Exception
+     * @return void
      */
-    final protected function createController(string $controllerId)
-    {
-        $controllerName = $this->controllerNamespace . '\\' . ucfirst($controllerId) . 'Controller';
-
-        if(!class_exists($controllerName)){
-            throw new \Exception(sprintf('Controller class "%s" does not exist.', $controllerName));
-        }
-
-        return new $controllerName();
-    }
-
     abstract protected function coreComponents() :void;
 
     /**
@@ -168,5 +245,98 @@ abstract class Application extends Component
             $class = $config['class'];
             $this->add($name, $class, $config);
         }
+    }
+
+    /**
+     * @param string $name
+     * @param Component $instance
+     * @return void
+     * @throws InvalidConfigException
+     */
+    private function addInstance(string $name, Component $instance)
+    {
+        if ($this->hasInstance($name)) {
+            throw new InvalidConfigException(sprintf('Component %s instance already created.', $name));
+        }
+
+        $this->container->set($name, $instance);
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    private function hasInstance(string $name): bool
+    {
+        return $this->container->has($name);
+    }
+
+    /**
+     * @param string $name
+     * @return Component|null
+     * @throws ContainerException
+     * @throws \ReflectionException
+     */
+    private function getInstance(string $name): ?Component
+    {
+        $instance = $this->container->get($name);
+
+        if(!$instance instanceof Component){
+            throw new \Exception('1');
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @param Configurable $object
+     * @param array $properties
+     * @return void
+     * @throws InvalidConfigException
+     */
+    public static function configure(Configurable $object, array $properties): void
+    {
+        if(isset($properties['class']) && $properties['class'] !== $object::class){
+            throw new InvalidConfigException(sprintf('Configuration array class "%s" does not refer to the right Configurable object "%s".',
+                $properties['class'], $object::class));
+        }
+
+        foreach ($properties as $name => $value){
+            $object->$name = $value;
+        }
+
+        $object->config = $properties;
+    }
+
+    /**
+     * @param $className
+     * @return void
+     */
+    public static function autoload($className)
+    {
+        \App::$get->loader->autoload($className);
+    }
+
+    /**
+     * Configures the autoloader namespace with existing paths.
+     *
+     * @return void
+     * @throws InvalidConfigException
+     */
+    private function configureAutoloader(): void
+    {
+        if(empty($this->basePath)){
+            throw new InvalidConfigException('Configuration $basePath attribute is required.');
+        }
+
+        if(!is_dir($this->basePath)){
+            throw new InvalidConfigException(sprintf('Configuration $basePath attribute "%s" is not a valid directory.', $this->basePath));
+        }
+
+        $this->loader->registerNamespaces([
+            'app' => $this->basePath
+        ]);
+
+        $this->loader->register();
     }
 }
