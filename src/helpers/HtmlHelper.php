@@ -2,13 +2,23 @@
 
 namespace mgine\helpers;
 
+/**
+ * HtmlHelper
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class HtmlHelper extends \mgine\base\HtmlHelper
 {
-
+    /**
+     * @var array|string[]
+     */
     private static array $closeTag = [
         'div', 'script'
     ];
 
+    /**
+     * @return string|null
+     */
     public static function csrfMetaTags(): ?string
     {
         $request = \App::$get->request;
@@ -31,6 +41,12 @@ class HtmlHelper extends \mgine\base\HtmlHelper
         return implode("\n", $tags);
     }
 
+    /**
+     * @param string $name
+     * @param $content
+     * @param array $options
+     * @return string
+     */
     public static function tag(string $name, $content = null, array $options = []): string
     {
         $tagParams = array_merge([$name], ArrayHelper::parametrizeAssocArray($options));
@@ -44,6 +60,7 @@ class HtmlHelper extends \mgine\base\HtmlHelper
     }
 
     /**
+     * @param string|array $tag
      * @return string
      */
     private static function tagOpen(string|array $tag): string
@@ -56,6 +73,7 @@ class HtmlHelper extends \mgine\base\HtmlHelper
     }
 
     /**
+     * @param string $string
      * @return string
      */
     private static function tagClose(string $string): string

@@ -2,11 +2,19 @@
 
 namespace mgine\helpers;
 
-use ReflectionClass;
-
+/**
+ * InflectorHelper
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class InflectorHelper
 {
-    public static function camelCase($str, array $noStrip = [])
+    /**
+     * @param $str
+     * @param array $noStrip
+     * @return string
+     */
+    public static function camelCase($str, array $noStrip = []): string
     {
         $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);
 
@@ -17,10 +25,5 @@ class InflectorHelper
         $str = lcfirst($str);
 
         return $str;
-    }
-
-    public static function getClassBaseName(object $object) :string
-    {
-        return (new \ReflectionClass($object))->getShortName();
     }
 }

@@ -4,9 +4,18 @@ namespace mgine\helpers;
 
 use OpenSSLAsymmetricKey;
 
+/**
+ * FileHelper
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class FileHelper
 {
-
+    /**
+     * @param string $filename
+     * @return OpenSSLAsymmetricKey|false
+     * @throws \Exception
+     */
     public static function readPublicKeyFile(string $filename): OpenSSLAsymmetricKey|false
     {
         if(!file_exists($filename)){
