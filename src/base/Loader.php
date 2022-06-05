@@ -30,6 +30,7 @@ class Loader extends Component
 
             if(str_starts_with($className, $namespace)){
                 $classFile = str_replace($namespace, $path, $className) . '.php';
+                $classFile = str_replace('\\', DIRECTORY_SEPARATOR, $classFile);
 
                 if(is_file($classFile)){
                     include $classFile;
