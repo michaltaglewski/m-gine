@@ -41,4 +41,14 @@ class ClassHelper
         return (new ReflectionClass($object))->getShortName();
     }
 
+    /**
+     * @param object $object
+     * @return array
+     */
+    public static function classConstants(object $object): array
+    {
+        $reflector = new \ReflectionClass($object);
+
+        return array_diff($reflector->getConstants(), $reflector->getParentClass()->getConstants());
+    }
 }
