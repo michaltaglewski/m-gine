@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="src/builder/assets/img/logo-120.png">
+  <img src="src/builder/assets/public/img/logo-120.png">
 </p>
 
 # M-Gine Framework
