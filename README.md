@@ -103,7 +103,7 @@ return [
 ];
 ```
 
-### Databse connection
+### Database connection
 
 **config/db.php**:
 ```php
