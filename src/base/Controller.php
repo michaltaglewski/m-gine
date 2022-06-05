@@ -2,8 +2,8 @@
 
 namespace mgine\base;
 
+use mgine\helpers\{InflectorHelper,ClassHelper};
 use mgine\web\View;
-use mgine\helpers\ClassHelper;
 
 /**
  * Base Controller Class
@@ -120,6 +120,7 @@ abstract class Controller extends Component
     public function runAction(string $actionId, array $args = []): array|string
     {
         $this->actionId = $actionId;
+
         $this->setActionMethodName();
 
         if(empty($this->actionId) || !$this->actionMethodExists()){
@@ -215,12 +216,12 @@ abstract class Controller extends Component
 
     public function getViewPath(): string
     {
-        return BASE_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $this->id;
+        return \App::$get->basePath . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $this->id;
     }
 
     public function getLayoutFile(): string
     {
-        return BASE_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR .  'layouts' . DIRECTORY_SEPARATOR . $this->layout;
+        return \App::$get->basePath . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR .  'layouts' . DIRECTORY_SEPARATOR . $this->layout;
     }
 
     final protected function setActionArgs(array $args) :void

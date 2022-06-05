@@ -19,6 +19,28 @@ abstract class Application extends Component
     public string $basePath;
 
     /**
+     * @var string
+     */
+    public string $language = 'en';
+
+    /**
+     * @var string
+     */
+    public string $charset = 'utf-8';
+
+    /**
+     * Application namespace @TODO
+     *
+     * @var string
+     */
+    public string $namespace = 'app';
+
+    /**
+     * @var array
+     */
+    public array $params = [];
+
+    /**
      * Application Loader.
      *
      * @var loader
@@ -149,13 +171,13 @@ abstract class Application extends Component
      * @param array $config
      * @return false|void
      * @throws ContainerException
-     * @throws InvalidConfigException
+     * @throws UnknownClassException
      * @throws \ReflectionException
      */
     public function add(string $name, string $class, array $config = [])
     {
         if(!class_exists($class)){
-            throw new InvalidConfigException(sprintf('Class "%s" does not exist.', $class));
+            throw new UnknownClassException(sprintf('Class "%s" does not exist.', $class));
         }
 
         if($this->isConfigurable($class)){
@@ -334,7 +356,7 @@ abstract class Application extends Component
         }
 
         $this->loader->registerNamespaces([
-            'app' => $this->basePath
+            $this->namespace => $this->basePath
         ]);
 
         $this->loader->register();
