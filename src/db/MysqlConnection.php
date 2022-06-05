@@ -9,7 +9,7 @@ use mgine\base\Component;
 /**
  * MysqlConnection @TODO
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class MysqlConnection extends Connection implements ConnectionInterface
 {

@@ -7,7 +7,7 @@ use mgine\builder\pattern\PatternInterface;
 /**
  * ProjectBuilder component
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class ProjectBuilder extends Builder
 {

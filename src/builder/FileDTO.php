@@ -7,7 +7,7 @@ use mgine\base\InvalidConfigException;
 /**
  * File DataTransferObject
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class FileDTO
 {

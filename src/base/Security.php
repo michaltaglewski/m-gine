@@ -5,7 +5,7 @@ namespace mgine\base;
 /**
  * Security
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class Security extends Component
 {

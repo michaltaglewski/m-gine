@@ -5,7 +5,7 @@ namespace mgine\web;
 /**
  * Web Application
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class Application extends \mgine\base\Application
 {

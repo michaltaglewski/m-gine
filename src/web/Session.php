@@ -7,7 +7,7 @@ use mgine\base\Component;
 /**
  * Session
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal TaglewskiTaglewski <mtaglewski.dev@gmail.com>
  */
 class Session extends Component
 {

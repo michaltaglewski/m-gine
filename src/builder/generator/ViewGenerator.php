@@ -5,7 +5,7 @@ namespace mgine\builder\generator;
 /**
  * ViewGenerator
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class ViewGenerator extends \mgine\builder\Generator
 {

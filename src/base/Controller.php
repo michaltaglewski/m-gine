@@ -12,7 +12,7 @@ use mgine\web\View;
  * Extend this class in any new controllers:
  *     class IndexController extends \mgine\base\Controller
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 abstract class Controller extends Component
 {

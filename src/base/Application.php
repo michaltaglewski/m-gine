@@ -7,7 +7,7 @@ use mgine\di\Container;
 /**
  * Base Application
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 abstract class Application extends Component
 {

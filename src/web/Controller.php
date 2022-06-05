@@ -5,7 +5,7 @@ namespace mgine\web;
 /**
  * Controller
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class Controller extends \mgine\base\Controller
 {

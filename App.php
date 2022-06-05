@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * M-Gine main Application helper
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class App
 {

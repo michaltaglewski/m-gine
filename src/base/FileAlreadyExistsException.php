@@ -5,7 +5,7 @@ namespace mgine\base;
 /**
  * FileAlreadyExistsException
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class FileAlreadyExistsException extends \Exception
 {

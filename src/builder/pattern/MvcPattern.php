@@ -16,7 +16,7 @@ use \mgine\builder\generator\{
  * @property ViewGenerator $view
  * @property ControllerGenerator $controller
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class MvcPattern extends Builder implements PatternInterface
 {

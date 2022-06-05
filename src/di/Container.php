@@ -11,7 +11,7 @@ use mgine\base\ContainerException;
 /**
  * DI Container
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal TaglewskiTaglewski <mtaglewski.dev@gmail.com>
  */
 class Container implements ContainerInterface
 {

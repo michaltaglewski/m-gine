@@ -5,7 +5,7 @@ namespace mgine\builder\controllers;
 /**
  * Builder HelpController
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class HelpController extends \mgine\console\Controller
 {

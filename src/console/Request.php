@@ -5,7 +5,7 @@ namespace mgine\console;
 /**
  * Request
  *
- * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
 class Request extends \mgine\base\Request
 {
