@@ -9,7 +9,7 @@ use OpenSSLAsymmetricKey;
  *
  * @author Michal Tglewski <mtaglewski.dev@gmail.com>
  */
-class FileHelper
+class FileHelper extends \mgine\base\FileHelper
 {
     /**
      * @param string $filename
@@ -30,5 +30,4 @@ class FileHelper
 
         return $pkey;
     }
-
 }
