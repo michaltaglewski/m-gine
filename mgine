@@ -30,6 +30,6 @@ $application = new mgine\console\Application([
 
 $version = '0.0.1';
 
-print "M-gine commands ($version)" . PHP_EOL . PHP_EOL;
+print "M-Gine commands ($version)" . PHP_EOL . PHP_EOL;
 
 $application->run();

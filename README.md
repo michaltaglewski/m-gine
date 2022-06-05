@@ -29,7 +29,7 @@ php composer.phar install
 
 Then initiate your first project. See the [M-gine commands](#m-gine-commands) section below.
 
-## M-gine commands
+## M-Gine commands
 
 Right after the composer installation is completed, you are able to use **M-Gine** commands tool.
 
@@ -44,7 +44,7 @@ This command should display something similar to:
 ```bash
 $ ./vendor/bin/mgine help
 
-M-gine commands (0.0.1)
+M-Gine commands (0.0.1)
 
 Available commands:
   create-project       Creates a new project. Usage: project-create [name]
