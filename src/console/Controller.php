@@ -32,11 +32,30 @@ class Controller extends \mgine\base\Controller
     ];
 
     /**
-     * @param string $string
-     * @param $color
+     * @param string $color
      * @return void
      */
-    protected function addTextColor(string &$string, $color)
+    protected function setTextColor(string $color): void
+    {
+        $c = $this->cliTextColors[$color] ?? null;
+
+        print "\e[{$c}m";
+    }
+
+    /**
+     * @return void
+     */
+    protected function resetTextColor(): void
+    {
+        print "\e[0m";
+    }
+
+    /**
+     * @param string $string
+     * @param string $color
+     * @return void
+     */
+    protected function addTextColor(string &$string, string $color): void
     {
         $c = $this->cliTextColors[$color] ?? null;
 
@@ -48,7 +67,7 @@ class Controller extends \mgine\base\Controller
      * @param string|null $color
      * @return void
      */
-    protected function printLine(string $line, string $color = null)
+    protected function printLine(string $line, string $color = null): void
     {
         if($color !== null){
             $this->addTextColor($line, $color);
