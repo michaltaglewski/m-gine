@@ -12,7 +12,15 @@ use mgine\helpers\HtmlHelper;
  */
 class View extends BaseView
 {
-    public $title = 'Main Page';
+    public string $title = 'Main Page';
+
+    /**
+     * @return string
+     */
+    public function lang(): string
+    {
+        return \App::$get->language;
+    }
 
     /**
      * @return string
@@ -20,6 +28,14 @@ class View extends BaseView
     public function charset(): string
     {
         return \App::$get->response->charset;
+    }
+
+    /**
+     * @return string
+     */
+    public function baseUrl(): string
+    {
+        return \App::$get->baseUrl;
     }
 
     /**

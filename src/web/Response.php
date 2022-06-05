@@ -28,6 +28,7 @@ class Response extends \mgine\base\Response
     public function __construct(HttpHeaders $headers)
     {
         $this->headers = $headers;
+        $this->charset = \App::$get->charset;
 
         parent::__construct();
     }

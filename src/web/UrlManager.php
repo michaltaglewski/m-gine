@@ -34,7 +34,9 @@ class UrlManager extends \mgine\base\Component
      */
     private function createRules() :void
     {
-        $this->rules[BASE_URL] = $this->defaultRoute;
+        $baseUrl = \App::$get->baseUrl;
+
+        $this->rules[$baseUrl] = $this->defaultRoute;
 
         if(!empty($this->config['rules'])){
             foreach ($this->config['rules'] as $rule => $route){

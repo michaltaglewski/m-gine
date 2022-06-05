@@ -10,6 +10,13 @@ namespace mgine\web;
 class Application extends \mgine\base\Application
 {
     /**
+     * Web Application's base URL.
+     *
+     * @var string
+     */
+    public string $baseUrl = '/';
+
+    /**
      * @var string
      */
     public string $controllerNamespace = 'app\controllers';
