@@ -1,10 +1,35 @@
 #!/usr/bin/env php
-
 <?php
+
+$scriptDir = dirname($_SERVER['SCRIPT_FILENAME']);
+
+$vendorDir = realpath($scriptDir . '/..');
+$appRootPath = realpath($vendorDir . '/..');
+
+$autoload = $vendorDir . '/autoload.php';
+
+if(file_exists($autoload)){
+    require $autoload;
+}
+
+if (!isset($vendorDir)) {
+    echo "composer autoloader could not be found.\nYou should run `composer install` in repo root directory.\n";
+    exit(1);
+}
+
+$application = new mgine\console\Application([
+    'basePath' => $scriptDir,
+    'controllerNamespace' => 'mgine\builder\controllers',
+    'defaultRoute' => 'help',
+    'commandsList' => \mgine\builder\controllers\HelpController::$commandsList,
+    'params' => [
+        'vendorDir' => $vendorDir,
+        'appRootPath' => $appRootPath,
+    ]
+]);
 
 $version = '0.0.1';
 
-print 'Welcome to the M-gine commands' . PHP_EOL;
-print 'Version: ' . $version . PHP_EOL;
+print "M-gine commands ($version)" . PHP_EOL . PHP_EOL;
 
-exit(1);
+$application->run();
