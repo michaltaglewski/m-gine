@@ -14,8 +14,9 @@ namespace <?= $this->getClassNamespace() ?>;
 
 class <?= $this->className ?> <?= $this->getClassExtends() . "\n" ?>
 {
+
 <?php foreach ($this->getActionIDs() as $id): ?>
-    public function <?= InflectorHelper::camelCase("action-$id") ?>()
+    public function <?= InflectorHelper::idToCamelCase("action-$id") ?>()
     {
         return $this->render('<?= $id ?>');
     }

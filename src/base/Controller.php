@@ -161,7 +161,7 @@ abstract class Controller extends Component
      */
     public function setActionMethodName() :void
     {
-        $this->actionMethodName = 'action' . ucfirst($this->actionId);
+        $this->actionMethodName = 'action' . ucfirst(InflectorHelper::idToCamelCase($this->actionId));
     }
 
     /**

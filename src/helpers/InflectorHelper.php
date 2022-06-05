@@ -10,20 +10,15 @@ namespace mgine\helpers;
 class InflectorHelper
 {
     /**
-     * @param $str
-     * @param array $noStrip
+     * Converts 'id-formatted-string' to 'camelCaseFormattedString';
+     *
+     * @param $string
      * @return string
      */
-    public static function camelCase($str, array $noStrip = []): string
+    public static function idToCamelCase($string): string
     {
-        $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);
-
-        $str = trim($str);
-
-        $str = ucwords($str);
-        $str = str_replace(" ", "", $str);
-        $str = lcfirst($str);
-
-        return $str;
+        return preg_replace_callback('/[-_](.)/', function ($matches) {
+            return strtoupper($matches[1]);
+        }, $string);
     }
 }
