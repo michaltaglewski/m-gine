@@ -38,6 +38,9 @@ class Loader extends Component
         }
     }
 
+    /**
+     * @return void
+     */
     public function register(): void
     {
         spl_autoload_register([$this, 'autoload']);
