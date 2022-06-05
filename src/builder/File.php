@@ -2,6 +2,9 @@
 
 namespace mgine\builder;
 
+use mgine\base\FileAlreadyExistsException;
+use mgine\helpers\FileHelper;
+
 /**
  * Builder File
  *
@@ -17,12 +20,12 @@ class File
     /**
      * @var string
      */
-    public string $content;
+    public string $directory;
 
     /**
      * @var string
      */
-    public string $directory;
+    protected string $content;
 
     /**
      * @var string
@@ -52,19 +55,28 @@ class File
     }
 
     /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
      * @param string $rootDirectory
      * @return bool
+     * @throws FileAlreadyExistsException
      */
     public function save(string $rootDirectory): bool
     {
         $this->createDirectory($rootDirectory);
         $filename = $rootDirectory . $this->relativePath;
 
-        if(file_put_contents($filename, $this->content)){
-            return true;
+        if(is_file($filename)){
+            throw new FileAlreadyExistsException('File already exists');
         }
 
-        return false;
+        return FileHelper::createFile($filename, $this->content);
     }
 
     /**
@@ -73,10 +85,6 @@ class File
      */
     private function createDirectory(string $rootDirectory): void
     {
-        $fileDirname = $rootDirectory . '/' . $this->directory;
-
-        if(!is_dir($fileDirname)){
-            mkdir($fileDirname, 0777, true);
-        }
+        FileHelper::makeDirIfNotExists($rootDirectory . '/' . $this->directory, recursive:true);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace mgine\builder\pattern;
 
-use mgine\builder\Pattern;
+use mgine\builder\Builder;
 use \mgine\builder\generator\{
     ModelGenerator,
     ViewGenerator,
@@ -10,14 +10,17 @@ use \mgine\builder\generator\{
 };
 
 /**
+ * MvcPattern
+ *
  * @property ModelGenerator $model
  * @property ViewGenerator $view
  * @property ControllerGenerator $controller
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
  */
-
-class MvcPattern extends Pattern
+class MvcPattern extends Builder implements PatternInterface
 {
-    public array $generators = [
+    protected array $generators = [
         'model' => '\mgine\builder\generator\ModelGenerator',
         'view' => '\mgine\builder\generator\ViewGenerator',
         'controller' => '\mgine\builder\generator\ControllerGenerator'

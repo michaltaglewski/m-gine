@@ -9,7 +9,7 @@ use mgine\helpers\ClassHelper;
  *
  * @author Michal Tglewski <mtaglewski.dev@gmail.com>
  */
-abstract class Generator
+class Generator
 {
     /**
      * @var string
@@ -52,9 +52,19 @@ abstract class Generator
     public ?string $baseClass = null;
 
     /**
+     * @var array|null
+     */
+    public ?array $classProperties;
+
+    /**
+     * @var array
+     */
+    public array $customParams = [];
+
+    /**
      * @var string
      */
-    private string $objectName;
+    private ?string $objectName = null;
 
     /**
      * @var string
@@ -70,12 +80,15 @@ abstract class Generator
             $this->appNamespace = $appNamespace;
         }
 
-        $classBaseName = ClassHelper::getClassBaseName($this);
+        $this->templatesPath = __DIR__ . '/generator/templates';
 
-        $this->objectName = strtolower(str_replace('Generator', '', $classBaseName));
-        $this->templatesPath = ClassHelper::getClassDirectory($this) . '/templates';
 
-        $this->setTemplate();
+        if($this::class !== self::class){
+            $classBaseName = ClassHelper::getClassBaseName($this);
+            $this->objectName = strtolower(str_replace('Generator', '', $classBaseName));
+
+            $this->setTemplate();
+        }
     }
 
     /**
@@ -97,6 +110,49 @@ abstract class Generator
         } else {
             $this->directory = $directory;
         }
+    }
+
+    /**
+     * @param string|null $className
+     * @param string|null $baseClass
+     * @return void
+     */
+    public function setClassName(?string $className = null, ?string $baseClass = null): void
+    {
+        if($className !== null){
+            $this->className = $className;
+        }
+
+        if($baseClass !== null){
+            $this->baseClass = $baseClass;
+        }
+    }
+
+    /**
+     * @param array|null $classProperties
+     * @return void
+     */
+    public function setClassProperties(?array $classProperties): void
+    {
+        $this->classProperties = $classProperties;
+    }
+
+    /**
+     * @param array $params
+     * @return void
+     */
+    public function setCustomParams(array $params): void
+    {
+        $this->customParams = $params;
+    }
+
+    /**
+     * @param array $params
+     * @return void
+     */
+    public function addCustomParams(array $params): void
+    {
+        $this->customParams = array_merge($this->customParams, $params);
     }
 
     /**
@@ -132,18 +188,50 @@ abstract class Generator
     }
 
     /**
-     * @param string|null $name
+     * @return array|null
+     */
+    public function getClassProperties(): ?array
+    {
+        if($this->isClass()){
+            return $this->classProperties;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param FileDTO $config
+     * @return void
+     */
+    public function configureFile(FileDTO $config): void
+    {
+        if($config->name !== null){
+            $this->name = basename($config->name, $this->extension);
+        }
+
+        if($this->isClass()){
+            $this->setClassName($config->className);
+            $this->setClassProperties($config->classProperties);
+        }
+
+        if(is_string($config->directory) && !empty($config->directory)){
+            $this->setDirectory($config->directory);
+        }
+
+        $this->addCustomParams($config->customParams);
+        $this->setTemplate($config->template);
+    }
+
+    /**
      * @return File
      * @throws \Exception
      */
-    public function createFile(string $name = null): File
+    public function createFile(): File
     {
+        $this->validate();
+
         if(!is_file($this->template)) {
             throw new \Exception(sprintf('"%s" template file does not exist.', $this->template));
-        }
-
-        if($name !== null){
-            $this->name = basename($name, $this->extension);
         }
 
         return new File($this->getBasename(), $this->getContent(), $this->directory);
@@ -176,5 +264,9 @@ abstract class Generator
         }
 
         $this->template = realpath($this->templatesPath . DIRECTORY_SEPARATOR . $name . $this->extension);
+    }
+
+    protected function validate()
+    {
     }
 }

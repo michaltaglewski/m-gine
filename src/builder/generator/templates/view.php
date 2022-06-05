@@ -12,5 +12,9 @@ echo "<?php\n";
 * @var mgine\web\View $this
 */
 
+<?php foreach ($this->getViewProperties() as $name => $value): ?>
+$this-><?= $name ?> = <?= (is_string($value) ? "'$value'" : $value) ?>;
+<?php endforeach; ?>
+
 ?>
 <h1><?= "<?= \$this->title ?>" ?></h1>

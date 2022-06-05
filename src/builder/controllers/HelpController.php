@@ -2,19 +2,38 @@
 
 namespace mgine\builder\controllers;
 
+/**
+ * Builder HelpController
+ *
+ * @author Michal Tglewski <mtaglewski.dev@gmail.com>
+ */
 class HelpController extends \mgine\console\Controller
 {
+    /**
+     * Available builder commands
+     *
+     * @var array|\string[][]
+     */
     public static array $commandsList = [
-        'project-create' => [
+        'create-project' => [
             'route' => 'project/create',
-            'description' => 'create a new project with parameter "name".'
+            'description' => 'Creates a new project. Usage: project-create [name]'
         ],
-        'project-init' => [
+        'init-project' => [
             'route' => 'project/init',
-            'description' => 'initialize a new project in current directory.'
-        ]
+            'description' => 'Initializes a new project in current directory. Usage: init-project'
+        ],
+        'create-controller' => [
+            'route' => 'controller/create',
+            'description' => 'Creates a Controller. Usage: create-controller [name] [namespace]'
+        ],
     ];
 
+    /**
+     * Action prints available builder commands
+     *
+     * @return void
+     */
     public function actionIndex()
     {
         $this->printLine('Available commands: ');

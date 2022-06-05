@@ -2,36 +2,23 @@
 
 namespace mgine\builder;
 
-use mgine\base\Component;
+use mgine\builder\pattern\PatternInterface;
 
 /**
- * ProjectBuilder
+ * ProjectBuilder component
  *
  * @author Michal Tglewski <mtaglewski.dev@gmail.com>
  */
-class ProjectBuilder extends Component
+class ProjectBuilder extends Builder
 {
     /**
-     * @var string
+     * @var PatternInterface|null
      */
-    public string $rootPath;
+    public ?PatternInterface $pattern = null;
 
     /**
-     * @var string
-     */
-    public string $namespace = 'app';
-
-    /**
-     * @var array
-     */
-    public array $files;
-
-    /**
-     * @var Pattern|null
-     */
-    public ?Pattern $pattern = null;
-
-    /**
+     * Constructor
+     *
      * @param array $config
      * @throws \mgine\base\InvalidConfigException
      */
@@ -41,34 +28,31 @@ class ProjectBuilder extends Component
     }
 
     /**
-     * @param Pattern $pattern
+     * Sets project Pattern [MvcPattern]
+     *
+     * @param PatternInterface $pattern
+     * @param bool $inheritProjectNamespace
      * @return void
      */
-    public function setPattern(Pattern $pattern): void
+    public function setPattern(PatternInterface $pattern, bool $inheritProjectNamespace = true): void
     {
         $this->pattern = $pattern;
+
+        if($inheritProjectNamespace){
+            $this->setNamespace($this->namespace);
+        }
     }
 
     /**
-     * @param $namespace
-     * @return void
-     */
-    public function setNamespace($namespace): void
-    {
-        $this->namespace = $namespace;
-    }
-
-    /**
+     * Generates project files along with their content.
+     *
      * @return array \mgine\builder\File[]
      */
     public function generate(): array
     {
-        $files = [];
+        $files = parent::generate();
 
         if($this->pattern !== null){
-
-            $this->pattern->setNamespace($this->namespace);
-
             $files = array_merge($files, $this->pattern->generate());
         }
 
