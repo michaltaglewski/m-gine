@@ -3,11 +3,10 @@
 namespace mgine\base;
 
 /**
- * InvalidControllerException
+ * UnknownClassException
  *
  * @author Michal Tglewski <mtaglewski.dev@gmail.com>
  */
-class InvalidControllerException extends UnknownClassException
+class UnknownClassException extends \Exception
 {
-
 }

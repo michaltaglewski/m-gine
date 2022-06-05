@@ -3,11 +3,10 @@
 namespace mgine\base;
 
 /**
- * InvalidControllerException
+ * FileAlreadyExistsException
  *
  * @author Michal Tglewski <mtaglewski.dev@gmail.com>
  */
-class InvalidControllerException extends UnknownClassException
+class FileAlreadyExistsException extends \Exception
 {
-
 }
