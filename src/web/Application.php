@@ -101,7 +101,7 @@ class Application extends \mgine\base\Application
     protected function coreComponents(): void
     {
         $this->add('urlManager', 'mgine\web\UrlManager');
-        $this->add('errorHandler', 'mgine\web\errorHandler');
+        $this->add('errorHandler', 'mgine\web\ErrorHandler');
 
         $this->add('security', 'mgine\base\Security');
         $this->add('session', 'mgine\web\Session');
