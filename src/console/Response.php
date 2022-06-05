@@ -30,12 +30,12 @@ class Response extends \mgine\base\Response
      */
     public function sendError(\Throwable $ex)
     {
-        parent::sendError($ex);
-
         try {
             throw $ex;
-        } catch (InvalidActionException | InvalidRouteException | UnknownCommandException| MissingArgumentException $ex) {
-            echo $ex->getMessage();die;
+        } catch (InvalidActionException | InvalidRouteException | UnknownCommandException | MissingArgumentException $ex) {
+            print $ex->getMessage() . PHP_EOL;
         }
+
+        parent::sendError($ex);
     }
 }
