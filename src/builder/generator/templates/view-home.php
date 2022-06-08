@@ -1,6 +1,6 @@
 <?php
 /**
- * This is the template for generating a view file.
+ * This is the template for generating framework 'Welcome' home\index view file.
  */
 
 /* @var $this \mgine\builder\generator\ViewGenerator */
@@ -9,38 +9,22 @@ echo "<?php\n";
 ?>
 
 /**
-* @var mgine\web\View $this
+* @var array $rootPackage
 * @var array $installedPackages
+* @var mgine\web\View $this
 */
 
+$rootPackageURL = $rootPackage['source']['url'] ?? 'https://github.com/michaltaglewski/m-gine';
+$version = ($rootPackage['version'] ? "Version: {$rootPackage['version']}": null);
+
 $this->title = 'Welcome to the M-Gine framework!';
-
-$installedPackages = [
-    'firebase/php-jwt' => [
-        'src' => 'https://github.com/firebase/php-jwt',
-        'v' => '^6.1'
-    ],
-    'psr/container' => [
-        'src' => 'https://packagist.org/packages/psr/container',
-        'v' => '^2.0^2.0'
-    ],
-    'twbs/bootstrap' => [
-        'src' => 'https://github.com/twbs/bootstrap',
-        'v' => '5.0.2'
-    ],
-    'twbs/bootstrap-icons' => [
-        'src' => 'https://github.com/twbs/icons',
-        'v' => '1.8.3'
-    ],
-];
-
 ?>
 <h1><?= "<?= \$this->title ?>" ?></h1>
-<p class="fs-5 col-md-8">Quickly and easily get started with Bootstrap's compiled, production-ready files with this barebones example featuring some basic HTML and helpful links. Download all our examples to get started.</p>
+<p class="fs-5 col-md-8"><?= "<?= \$version ?>" ?></p>
 
 <div class="mb-5">
-    <a href="https://github.com/michaltaglewski/m-gine" class="btn btn-success btn-lg px-4" target="_blank">
-        <i class="bi bi-github"></i> Get started with M-Gine
+    <a href="<?= "<?= \$rootPackageURL ?>" ?>" class="btn btn-success btn-lg px-4" target="_blank">
+        <i class="bi bi-github"></i> Get started
     </a>
 </div>
 
@@ -49,13 +33,26 @@ $installedPackages = [
 <div class="row g-5">
     <div class="col-md-6">
         <h2>Installed packages</h2>
-        <p>Ready to beyond the starter template? Check out these open source projects that you can quickly duplicate to a new GitHub repository.</p>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, delectus deleniti doloribus eligendi
+            hic laudantium neque nesciunt odit! Eius enim libero nobis omnis provident quod tenetur. Asperiores dolorem
+            earum neque!</p>
+
         <ul class="icon-list ps-0">
             <?= "<?php foreach (\$installedPackages as \$name => \$item): ?>\n" ?>
                 <li class="d-flex align-items-start mb-1">
-                    <a href="<?= "<?= \$item['src'] ?>" ?>" rel="noopener" target="_blank"><?= "<?= \$name ?>" ?></a>
+                    <?= "<?php \$v = (isset(\$item['version']) ? \" <strong>{\$item['version']}</strong>\": null); ?>\n" ?>
+                    <a href="<?= "<?= \$item['source']['url'] ?? '#' ?>" ?>" rel="noopener" target="_blank"><?= "<?= \$name . \$v ?>" ?></a>
                 </li>
             <?= "<?php endforeach ?>\n" ?>
         </ul>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Heading</h2>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, delectus deleniti doloribus eligendi
+            hic laudantium neque nesciunt odit! Eius enim libero nobis omnis provident quod tenetur. Asperiores dolorem
+            earum neque!</p>
     </div>
 </div>
