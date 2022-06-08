@@ -18,6 +18,7 @@ class <?= $this->className ?> <?= $this->getClassExtends() . "\n" ?>
     public function <?= InflectorHelper::idToCamelCase("action-$id") ?>()
     {
     <?php if($id === 'index'): ?>
+    $this->layout = 'welcome';
 
         $rootPackage = \mgine\base\Composer::getRootPackage();
         $installedPackages = \mgine\base\Composer::getInstalledPackages();

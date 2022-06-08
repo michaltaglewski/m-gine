@@ -136,11 +136,18 @@ class ProjectController extends BuilderController
             'template' => 'view-home'
         ]);
 
+        /** views/layout/welcome */
+        $mvc->addFileConfig('view', [
+            'directory' => 'views/layouts',
+            'name' => 'welcome',
+            'template' => 'layout-welcome',
+        ]);
+
         /** views/layout/main */
         $mvc->addFileConfig('view', [
             'directory' => 'views/layouts',
             'name' => 'main',
-            'template' => 'layout-bootstrap',
+            'template' => 'layout-default',
         ]);
     }
 }

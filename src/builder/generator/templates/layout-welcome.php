@@ -1,6 +1,6 @@
 <?php
 /**
- * This is the template for generating the main Bootstrap layout file.
+ * This is the template for generating the main Home Welcome layout file.
  */
 
 /* @var $this \mgine\builder\generator\ViewGenerator */
