@@ -20,6 +20,22 @@ class BaseArrayHelper
 
     /**
      * @param array $array
+     * @param string|int $column
+     * @return array
+     */
+    public static function indexByColumn(array $array, string|int $column): array
+    {
+        $arrayColumn = array_column($array, $column);
+
+        if(!empty($arrayColumn)){
+            return array_combine($arrayColumn, $array);
+        }
+
+        return $array;
+    }
+
+    /**
+     * @param array $array
      * @param string|int|null $column
      * @return array
      */
