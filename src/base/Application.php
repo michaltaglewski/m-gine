@@ -133,7 +133,7 @@ abstract class Application extends Component
      * Creates new Controller instance
      * @param string $controllerId
      * @return \mgine\web\Controller | \mgine\console\Controller
-     * @throws \Exception
+     * @throws InvalidControllerException
      */
     public function createController(string $controllerId)
     {
@@ -217,7 +217,7 @@ abstract class Application extends Component
             throw new EmptyRouteException(sprintf('Route must not be empty.'));
         }
 
-        if(!preg_match('/^[a-zA-Z_\x7f-\xff](?:[a-zA-Z0-9_\/\x7f-\xff]?)+(?<!\/)$/', $route)){
+        if(!preg_match('/^[a-zA-Z_\x7f-\xff](?:[a-zA-Z0-9_\-\/\x7f-\xff]?)+(?<!\/)$/', $route)){
             throw new InvalidRouteException(sprintf('Route "%s" contains invalid characters.', $route));
         }
 

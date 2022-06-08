@@ -121,15 +121,10 @@ class Request extends \mgine\base\Request
 
     /**
      * @return array
-     * @throws NotFoundHttpException
      */
     public function resolve() :array
     {
-        if(($result = \App::$get->urlManager->parseRequest($this)) !== false){
-            return $result;
-        }
-
-        throw new NotFoundHttpException('Page Not Found');
+        return \App::$get->urlManager->parseRequest($this);
     }
 
     /**

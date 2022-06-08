@@ -2,6 +2,12 @@
 
 namespace mgine\web;
 
+use mgine\base\{
+    InvalidRouteException,
+    InvalidControllerException,
+    InvalidActionException
+};
+
 /**
  * Web Application
  *
@@ -90,6 +96,21 @@ class Application extends \mgine\base\Application
         list($route, $params) = $request->resolve();
 
         return $this->runAction($route, $params);
+    }
+
+    /**
+     * @param $route
+     * @param array $params
+     * @return array|string
+     * @throws NotFoundHttpException
+     */
+    public function runAction($route, array $params = []): array|string
+    {
+        try {
+            return parent::runAction($route, $params);
+        } catch (InvalidRouteException | InvalidControllerException | InvalidActionException $e) {
+            throw new NotFoundHttpException('Page Not Found');
+        }
     }
 
     /**
