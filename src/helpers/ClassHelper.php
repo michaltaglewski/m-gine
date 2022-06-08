@@ -12,42 +12,42 @@ use ReflectionClass;
 class ClassHelper
 {
     /**
-     * @param object $object
+     * @param object|string $objectOrClass
      * @return string
      */
-    public static function getClassDirectory(object $object) :string
+    public static function getClassDirectory(object|string $objectOrClass) :string
     {
-        return dirname((new ReflectionClass($object))->getFileName());
+        return dirname((new ReflectionClass($objectOrClass))->getFileName());
     }
 
     /**
-     * @param object $object
+     * @param object|string $objectOrClass
      * @return string
      */
-    public static function getNamespacePath(object $object): string
+    public static function getNamespacePath(object|string $objectOrClass): string
     {
-        $reflector = new ReflectionClass($object);
-        $classDir = self::getClassBaseName($object);
+        $reflector = new ReflectionClass($objectOrClass);
+        $classDir = self::getClassBaseName($objectOrClass);
 
         return dirname($reflector->getFileName()) . DIRECTORY_SEPARATOR . $classDir;
     }
 
     /**
-     * @param object $object
+     * @param object|string $objectOrClass
      * @return string
      */
-    public static function getClassBaseName(object $object) :string
+    public static function getClassBaseName(object|string $objectOrClass) :string
     {
-        return (new ReflectionClass($object))->getShortName();
+        return (new ReflectionClass($objectOrClass))->getShortName();
     }
 
     /**
-     * @param object $object
+     * @param object|string $objectOrClass
      * @return array
      */
-    public static function classConstants(object $object): array
+    public static function classConstants(object|string $objectOrClass): array
     {
-        $reflector = new \ReflectionClass($object);
+        $reflector = new ReflectionClass($objectOrClass);
 
         return array_diff($reflector->getConstants(), $reflector->getParentClass()->getConstants());
     }
