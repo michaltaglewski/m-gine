@@ -125,7 +125,8 @@ class ProjectController extends BuilderController
     {
         /** HomeController */
         $mvc->addFileConfig('controller', [
-            'className' => 'HomeController'
+            'className' => 'HomeController',
+            'template' => 'controller-home'
         ]);
 
         /** views/home/index */
