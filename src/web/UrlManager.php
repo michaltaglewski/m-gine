@@ -60,9 +60,9 @@ class UrlManager extends \mgine\base\Component
 
     /**
      * @param Request $request
-     * @return false|array
+     * @return array
      */
-    public function parseRequest(Request $request) :false|array
+    public function parseRequest(Request $request) :array
     {
         $this->request = $request;
 
@@ -79,7 +79,10 @@ class UrlManager extends \mgine\base\Component
             ];
         }
 
-        return false;
+        return [
+            trim($path, '/'),
+            $this->request->get
+        ];
     }
 
     /**
