@@ -96,14 +96,12 @@ return [
     'class' => 'mgine\web\UrlManager',
     'defaultRoute' => 'home/index',
     'rules' => [
-        'rules' => [
-            /**
-             * Add your URL rules here
-             * '/' => 'home/index',
-             * '/about' => 'home/about',
-             * '/contact' => 'home/contact',
-             */
-        ]
+        /**
+         * Add your URL rules here
+         * '/' => 'home/index',
+         * '/about' => 'home/about',
+         * '/contact' => 'home/contact',
+         */
     ]
 ];
 ```
