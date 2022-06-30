@@ -16,6 +16,8 @@ abstract class Component implements Configurable
      */
     public array $config = [];
 
+    public string $basePath;
+
     /**
      * @param array $config
      * @throws InvalidConfigException
@@ -25,6 +27,8 @@ abstract class Component implements Configurable
         if(!empty($config)){
             Application::configure($this, $config);
         }
+
+        $this->basePath = \App::$get->basePath;
 
         $this->init();
     }
