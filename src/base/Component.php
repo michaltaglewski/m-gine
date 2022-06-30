@@ -40,11 +40,11 @@ abstract class Component implements Configurable
      * @param string $name
      * @param array $arguments
      * @return mixed
-     * @throws \Exception
+     * @throws UnknownMethodException
      */
     public function __call(string $name, array $arguments)
     {
-        throw new \Exception('Trying to get unknown ' . $name);
+        throw new UnknownMethodException(sprintf('Trying to get unknown method "%s::%s"', $this::class, $name));
     }
 
     /**
