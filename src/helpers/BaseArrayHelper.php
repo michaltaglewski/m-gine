@@ -10,6 +10,16 @@ namespace mgine\helpers;
 class BaseArrayHelper
 {
     /**
+     * @param mixed $needle
+     * @param array $haystack
+     * @return bool
+     */
+    public static function inArrayCaseInsensitive(mixed $needle, array $haystack)
+    {
+        return in_array(strtolower($needle), array_map('strtolower', $haystack));
+    }
+
+    /**
      * @param array $array
      * @return bool
      */
