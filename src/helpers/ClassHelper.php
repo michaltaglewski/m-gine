@@ -51,4 +51,28 @@ class ClassHelper
 
         return array_diff($reflector->getConstants(), $reflector->getParentClass()->getConstants());
     }
+
+    /**
+     * @param string $name
+     * @param object|string $objectOrClass
+     * @return mixed
+     */
+    public static function getClassConstant(string $name, object|string $objectOrClass): mixed
+    {
+        $constants = self::classConstants($objectOrClass);
+
+        return $constants[$name] ?? null;
+    }
+
+    /**
+     * @param string $name
+     * @param object|string $objectOrClass
+     * @return bool
+     */
+    public static function classConstantExists(string $name, object|string $objectOrClass): bool
+    {
+        $constants = self::classConstants($objectOrClass);
+
+        return array_key_exists($name, $constants);
+    }
 }
