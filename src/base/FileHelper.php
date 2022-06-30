@@ -13,15 +13,16 @@ class FileHelper
      * @param string $filename
      * @param mixed $data
      * @param bool $override
+     * @param int $flags
      * @return bool
      */
-    public static function createFile(string $filename, mixed $data, bool $override = false): bool
+    public static function createFile(string $filename, mixed $data, bool $override = false, int $flags = 0): bool
     {
         if(!$override && is_file($filename)){
             return false;
         }
 
-        if (file_put_contents($filename, $data)) {
+        if (file_put_contents($filename, $data, $flags)) {
             return true;
         }
 
