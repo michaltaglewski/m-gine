@@ -39,6 +39,8 @@ class Response extends Component
         if(DEBUG_MODE){
             throw $ex;
         }
+
+        exit($this->statusCode);
     }
 
 }
