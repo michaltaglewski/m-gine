@@ -1,0 +1,23 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "tests" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  php-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Composer install
+        run: composer install --no-scripts
+        working-directory: ./
+      - name: PHPUnit Test
+        run: php vendor/bin/phpunit
+
