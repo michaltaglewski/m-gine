@@ -16,6 +16,9 @@ abstract class Component implements Configurable
      */
     public array $config = [];
 
+    /**
+     * @var string
+     */
     public string $basePath;
 
     /**
@@ -54,7 +57,6 @@ abstract class Component implements Configurable
     /**
      * @param $name
      * @return mixed
-     * @throws InvalidCallException
      * @throws UnknownPropertyException
      */
     public function __get($name)

@@ -15,8 +15,15 @@ use mgine\helpers\FileHelper;
  */
 class Stream extends Component
 {
+    /**
+     * @var Formatter|\mgine\log\Formatter
+     */
     public Formatter $formatter;
 
+    /**
+     * @param string $path
+     * @throws \mgine\base\InvalidConfigException
+     */
     public function __construct(public string $path)
     {
         $this->formatter = new LogFormatter();
@@ -28,7 +35,7 @@ class Stream extends Component
      * @param Formatter $formatter
      * @return void
      */
-    public function setFormatter(Formatter $formatter)
+    public function setFormatter(Formatter $formatter): void
     {
         $this->formatter = $formatter;
     }
@@ -38,7 +45,7 @@ class Stream extends Component
      * @param string $message
      * @return bool
      */
-    public function save(string $type, string $message)
+    public function save(string $type, string $message): bool
     {
         $this->formatter->setType($type);
 
@@ -63,7 +70,7 @@ class Stream extends Component
     /**
      * @return string
      */
-    protected function getFilename()
+    protected function getFilename(): string
     {
         return $this->basePath . $this->path;
     }

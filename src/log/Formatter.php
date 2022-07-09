@@ -11,12 +11,25 @@ namespace mgine\log;
  */
 class Formatter extends \mgine\base\Formatter
 {
+    /**
+     * @var string
+     */
     public string $type;
 
+    /**
+     * @var string
+     */
     public string $dateFormat = "D, d M y H:i:s O";
 
+    /**
+     * @var string
+     */
     protected string $format = '[%date%] [%type%] %message%';
 
+    /**
+     * @param string|null $format
+     * @throws \mgine\base\InvalidConfigException
+     */
     public function __construct(string $format = null)
     {
         parent::__construct();
@@ -26,17 +39,29 @@ class Formatter extends \mgine\base\Formatter
         }
     }
 
-    public function setDateFormat(string $dateFormat)
+    /**
+     * @param string $dateFormat
+     * @return void
+     */
+    public function setDateFormat(string $dateFormat): void
     {
         $this->dateFormat = $dateFormat;
     }
 
-    public function setType(string $type)
+    /**
+     * @param string $type
+     * @return void
+     */
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    public function getMessage(string $message)
+    /**
+     * @param string $message
+     * @return string
+     */
+    public function getMessage(string $message): string
     {
         $params = [
             '%type%'=> $this->type,

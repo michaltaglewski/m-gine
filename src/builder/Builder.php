@@ -110,7 +110,6 @@ class Builder extends Component {
 
     /**
      * @param $name
-     * @return void
      * @throws UnknownClassException
      */
     public function __get($name)

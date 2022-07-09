@@ -61,7 +61,7 @@ class Application extends \mgine\base\Application
 
     /**
      * @param Request $request
-     * @return mixed
+     * @return array|string
      */
     public function handleRequest($request): array|string
     {
@@ -73,7 +73,7 @@ class Application extends \mgine\base\Application
     /**
      * @param $route
      * @param array $params
-     * @return mixed
+     * @return array|string
      * @throws UnknownCommandException
      */
     public function runAction($route, array $params = []): array|string

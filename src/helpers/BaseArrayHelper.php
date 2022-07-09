@@ -14,7 +14,7 @@ class BaseArrayHelper
      * @param array $haystack
      * @return bool
      */
-    public static function inArrayCaseInsensitive(mixed $needle, array $haystack)
+    public static function inArrayCaseInsensitive(mixed $needle, array $haystack): bool
     {
         return in_array(strtolower($needle), array_map('strtolower', $haystack));
     }
