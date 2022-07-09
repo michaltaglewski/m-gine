@@ -51,6 +51,16 @@ class Stream extends Component
     }
 
     /**
+     * @return bool
+     */
+    public function purge(): bool
+    {
+        $filename = $this->getFilename();
+
+        return unlink($filename);
+    }
+
+    /**
      * @return string
      */
     protected function getFilename()
