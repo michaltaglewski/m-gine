@@ -1,1 +1,5 @@
 src/web/JWT/
+
+# composer vendor dir
+/vendor
+/node_modules
