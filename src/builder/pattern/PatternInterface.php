@@ -9,4 +9,5 @@ namespace mgine\builder\pattern;
  */
 interface PatternInterface
 {
+    public function generate(): array;
 }
