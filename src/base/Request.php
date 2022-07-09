@@ -7,7 +7,7 @@ namespace mgine\base;
  *
  * @author Michal Taglewski <mtaglewski.dev@gmail.com>
  */
-abstract class Request extends Component
+abstract class Request extends Component implements RequestInterface
 {
     abstract public function resolve(): array;
 }
