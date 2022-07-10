@@ -4,6 +4,7 @@
 </p>
 
 # M-Gine Framework
+[![CI](https://github.com/michaltaglewski/m-gine/actions/workflows/ci.yml/badge.svg)](https://github.com/michaltaglewski/m-gine/actions/workflows/ci.yml)
 
 ## Requirements
 
