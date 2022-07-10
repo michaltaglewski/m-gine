@@ -17,7 +17,9 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Composer install
         run: composer install --no-scripts
-        working-directory: ./
+        working-directory: ./tests/app
+      - name: Init Project
+        run: php vendor/bin/mgine init-project
       - name: PHPUnit Test
         run: php vendor/bin/phpunit
 

@@ -1,0 +1,13 @@
+{
+    "name": "michaltaglewski/tests-app",
+    "authors": [
+        {
+            "name": "Michal Taglewski",
+            "email": "mtaglewski.dev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "michaltaglewski/m-gine": "dev-main"
+    }
+}
