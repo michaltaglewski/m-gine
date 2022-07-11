@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ "main" ]
 jobs:
-  php-unit-tests:
+  project-init:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -21,7 +21,3 @@ jobs:
       - name: Init Project
         run: php vendor/bin/mgine init-project
         working-directory: ./app
-      - name: PHPUnit Test
-        run: php vendor/bin/phpunit
-        working-directory: ./app
-
