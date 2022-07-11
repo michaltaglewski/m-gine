@@ -1,0 +1,27 @@
+name: Build
+on:
+  push:
+    branches: [ "main", "tests" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  php-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Composer install
+        run: composer install --no-scripts
+        working-directory: ./app
+      - name: Init Project
+        run: php vendor/bin/mgine init-project
+        working-directory: ./app
+      - name: PHPUnit Test
+        run: php vendor/bin/phpunit
+        working-directory: ./app
+
