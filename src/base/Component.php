@@ -31,7 +31,7 @@ abstract class Component implements Configurable
             Application::configure($this, $config);
         }
 
-        $this->basePath = \App::$basePath;
+        //$this->basePath = \App::$basePath;
 
         $this->init();
     }

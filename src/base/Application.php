@@ -41,13 +41,6 @@ abstract class Application extends Component
     public array $params = [];
 
     /**
-     * Application Loader.
-     *
-     * @var loader
-     */
-    public Loader $loader;
-
-    /**
      * @var string
      */
     public string $defaultRoute = 'index/index';
@@ -87,14 +80,12 @@ abstract class Application extends Component
      */
     public function __construct(array $config)
     {
-        \App::$get = $this;
-
         parent::__construct($config);
 
-        $this->container = new Container();
-        $this->loader = new Loader();
+        \App::init($this);
 
-        $this->configureAutoloader();
+        $this->container = new Container();
+
         $this->coreComponents();
     }
 
@@ -336,29 +327,6 @@ abstract class Application extends Component
      */
     public static function autoload($className)
     {
-        \App::$get->loader->autoload($className);
-    }
-
-    /**
-     * Configures the autoloader namespace with existing paths.
-     *
-     * @return void
-     * @throws InvalidConfigException
-     */
-    private function configureAutoloader(): void
-    {
-        if(empty($this->basePath)){
-            throw new InvalidConfigException('Configuration $basePath attribute is required.');
-        }
-
-        if(!is_dir($this->basePath)){
-            throw new InvalidConfigException(sprintf('Configuration $basePath attribute "%s" is not a valid directory.', $this->basePath));
-        }
-
-        $this->loader->registerNamespaces([
-            $this->namespace => $this->basePath
-        ]);
-
-        $this->loader->register();
+        \App::$loader->autoload($className);
     }
 }
