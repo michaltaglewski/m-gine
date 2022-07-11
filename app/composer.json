@@ -8,14 +8,14 @@
     ],
     "require": {
         "php": "^8.0",
-        "michaltaglewski/m-gine": "tests"
+        "michaltaglewski/m-gine": "dev-main"
     },
     "repositories": [
         {
             "type":"package",
             "package": {
               "name": "michaltaglewski/m-gine",
-              "version":"tests",
+              "version":"dev-main",
               "source": {
                   "url": "https://github.com/michaltaglewski/m-gine.git",
                   "type": "git",
