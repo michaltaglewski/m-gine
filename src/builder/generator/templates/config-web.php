@@ -7,7 +7,6 @@ echo "<?php\n";
 ?>
 
 return [
-    'basePath' => dirname(__DIR__),
     'language' => 'en',
     'charset' => 'utf-8',
     'components' => [

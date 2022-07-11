@@ -19,18 +19,24 @@ class BuilderController extends \mgine\console\Controller
     /**
      * @var string
      */
-    protected string $vendorDir;
+    protected string $rootPath;
 
     /**
      * @var string
      */
     protected string $appRootPath;
 
+    /**
+     * @var string
+     */
+    protected string $vendorDir;
+
     public function beforeAction()
     {
         $this->builderDir = dirname(__DIR__);
-        $this->vendorDir= \App::$get->params['vendorDir'];
-        $this->appRootPath= \App::$get->params['appRootPath'];
+        $this->vendorDir = \App::$get->params['vendorDir'];
+        $this->rootPath = \App::$get->params['rootPath'];
+        $this->appRootPath = \App::$get->params['appRootPath'];
     }
 
     /**
@@ -45,9 +51,9 @@ class BuilderController extends \mgine\console\Controller
     {
         print "Copying asset file '$name' to '$destinationFilename'... ";
 
-        $builderAssets = $this->builderDir . '/assets';
+        $root = str_starts_with($assetsFilename, '/') ? $this->rootPath : $this->builderDir . '/assets';
 
-        $builderAssetsFile = $builderAssets . '/' . $assetsFilename;
+        $builderAssetsFile = $root . '/' . $assetsFilename;
         $appFile = $this->appRootPath . '/' . $destinationFilename;
 
         FileHelper::makeDirIfNotExists(dirname($appFile));

@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+require 'bootstrap.php';
+
 $scriptDir = dirname($_SERVER['SCRIPT_FILENAME']);
 
 $vendorDir = realpath($scriptDir . '/..');
@@ -17,14 +19,16 @@ if (!isset($vendorDir)) {
     exit(1);
 }
 
+App::$basePath =  $appRootPath;
+
 $application = new mgine\console\Application([
-    'basePath' => $scriptDir,
     'controllerNamespace' => 'mgine\builder\controllers',
     'defaultRoute' => 'help',
     'commandsList' => \mgine\builder\controllers\HelpController::$commandsList,
     'params' => [
-        'vendorDir' => $vendorDir,
+        'rootPath' => __DIR__,
         'appRootPath' => $appRootPath,
+        'vendorDir' => $vendorDir
     ]
 ]);
 

@@ -75,6 +75,10 @@ class ProjectController extends BuilderController
         $this->copyVendorPackage('Bootstrap', '/twbs/bootstrap/dist', '/public/assets/bootstrap');
         $this->copyVendorPackage('Bootstrap Icons', '/twbs/bootstrap-icons/font', '/public/assets/bootstrap-icons');
 
+        /** Main App helper */
+        $this->copyFile('bootstrap.php', '/bootstrap.php', 'bootstrap.php');
+        $this->copyFile('App.php', '/App.php', 'App.php');
+
         /** Web /public files */
         $this->copyFile('favicon.ico', 'public/favicon.ico', 'public/favicon.ico');
         $this->copyFile('logo.png', 'public/img/logo.png', 'public/assets/img/logo.png');
